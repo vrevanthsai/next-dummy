@@ -11,6 +11,7 @@ const UpdateUser = ({ params }) => {
     // initial call
     useEffect(()=>{
         getUser();
+        // eslint-disable-next-line
     },[])
 
   // get initial user data with its id

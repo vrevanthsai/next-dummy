@@ -13,6 +13,7 @@ const UpdateProduct = ({params}) => {
 
     useEffect(()=>{
         getProduct();
+        // eslint-disable-next-line
     },[])
 
     // console.log(params.pid)
