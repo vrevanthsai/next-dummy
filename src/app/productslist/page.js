@@ -1,16 +1,26 @@
 import DeleteProduct from "@/lib/DeleteProduct";
+// import axios from "axios";
 import Link from "next/link";
 
 async function getProducts() {
-  let data = await fetch("http://localhost:3000/api/products",{ cache:"no-cache" }); // default method -GET
-  data = await data.json();
-  if (data.success) {
-    return data.result;
-  } else {
-    alert(data.result);
-    return;
+  try {
+    let data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`,
+      {cache : "no-store"}
+    ); // {cache : "no-cache"} - { next: {revalidate: 3,},}
+    data = await data.json();
+    // let { data } = await axios.get("http://localhost:3000/api/products")
+    if (data.success) {
+      return data.result;
+    } else {
+      alert(data.result);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    return [];
   }
 }
+
 // server comp
 const ProductsList = async () => {
   let products = await getProducts();
@@ -42,8 +52,12 @@ const ProductsList = async () => {
                 <td>{p.company}</td>
                 <td>{p.color}</td>
                 <td>{p.category}</td>
-                <td><Link href={`/productslist/${p._id}`}>Update-Product</Link> </td>
-                <td><DeleteProduct pid={p._id}/></td>
+                <td>
+                  <Link href={`/productslist/${p._id}`}>Update-Product</Link>{" "}
+                </td>
+                <td>
+                  <DeleteProduct pid={p._id} />
+                </td>
               </tr>
             );
           })}
